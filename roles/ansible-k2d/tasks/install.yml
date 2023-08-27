@@ -1,0 +1,41 @@
+---
+
+- name: Check if k2d is already running
+  community.docker.docker_container_info:
+    name: "{{ k2d_container_name }}"
+  register:
+    k2d_container_status
+  become: true
+
+- name: Does k2d container already exist?
+  ansible.builtin.debug:
+    msg: "The k2d container {{ 'exists' if k2d_container_status.exists else 'does not exist' }}"
+
+- name: Remove existing k2d container
+  community.docker.docker_container:
+    name: "{{ k2d_container_name }}"
+    state: absent
+  when:
+    k2d_container_status.exists and
+    k2d_container_status.container.Config.Image != k2d_image
+  become: true
+
+- name: Create k2d container
+  community.docker.docker_container:
+    name: "{{ k2d_container_name }}"
+    image: "{{ k2d_image }}"
+    state: started
+    restart: true
+    networks:
+      - name: host
+    env:
+      K2D_ADVERTISE_ADDR: "{{ k2d_server_ip }}"
+      K2D_SECRET: "{{ k2d_secret }}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/k2d:/var/lib/k2d
+  become: true
+
+- name: Get k2d cluster config
+  ansible.builtin.debug:
+    msg: 'To get the Kubeconfig, issue the following command: curl --insecure -H ''x-k2d-secret: YOUR_OWN_SECRET'' https://YOUR_HOST_IP:6443/k2d/kubeconfig'

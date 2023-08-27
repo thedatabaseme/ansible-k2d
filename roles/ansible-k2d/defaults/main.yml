@@ -1,0 +1,8 @@
+---
+
+is_raspberry: false
+
+k2d_container_name: k2d
+k2d_server_ip: ""
+k2d_secret: Supersecret
+k2d_image: portainer/k2d:1.0.0-alpha

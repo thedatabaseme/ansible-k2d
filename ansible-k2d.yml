@@ -1,0 +1,7 @@
+---
+
+- hosts: "{{ HOSTS | default('localhost') }}"
+  become_user: root
+
+  roles:
+   - roles/ansible-k2d

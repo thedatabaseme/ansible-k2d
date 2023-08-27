@@ -1,0 +1,18 @@
+---
+
+- name: Check if OS distribution is some Debian kind
+  ansible.builtin.fail:
+    msg: "OS distribution {{ ansible_os_family }} is not Debian family!"
+  when: (not ansible_os_family == 'Debian')
+
+- name: Check if this could be a Raspberry Pi OS
+  ansible.builtin.set_fact:
+    is_raspberry: true
+  when:
+    (ansible_os_family == 'Debian') and
+    (ansible_facts.lsb.id == 'Raspbian')
+
+- name: Variable k2d_server_ip is not defined
+  ansible.builtin.fail:
+    msg: "Variable k2d_server_ip is not defined!"
+  when: k2d_server_ip | string | length == 0
