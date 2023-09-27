@@ -37,5 +37,7 @@
   become: true
 
 - name: Get k2d cluster config
-  ansible.builtin.debug:
-    msg: 'To get the Kubeconfig, issue the following command: curl --insecure -H ''x-k2d-secret: YOUR_OWN_SECRET'' https://YOUR_HOST_IP:6443/k2d/kubeconfig'
+  ansible.builtin.set_fact:
+    dummy: value
+  with_items:
+    - 'To get the Kubeconfig, issue the following command: curl --insecure -H "Authorization: Bearer $(echo -n ''YOUR_OWN_SECRET'' | base64)" https://YOUR_HOST_IP:6443/k2d/kubeconfig'

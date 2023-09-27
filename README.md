@@ -28,7 +28,7 @@ Role Variables
 | k2d_container_name | Container name of k2d                                                                  | `k2d`                       |
 | k2d_server_ip      | Should be the IP of your Docker host. This parameter is mandatory to be set.           | `empty`                     |
 | k2d_secret         | Secret to retrieve Kubeconfig after k2d is running                                     | `Supersecret`               |
-| k2d_image          | Which image and image version should be used by this playbook to deploy the container. | `portainer/k2d:1.0.0-alpha` |
+| k2d_image          | Which image and image version should be used by this playbook to deploy the container. | `portainer/k2d:1.0.0-beta` |
 
 Dependencies
 ------------
